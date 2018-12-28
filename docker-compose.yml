@@ -1,0 +1,37 @@
+version: '3.2'
+services:
+
+  postgres:
+    container_name: sample-postgres
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./compose/postgres/Dockerfile
+    env_file: compose/postgres/postgres.env
+    volumes:
+      - postgre_data:/var/lib/postgresql/data
+    ports:
+     - 5433:5432/tcp
+
+  api:
+    container_name: sample-api
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./compose/api/Dockerfile
+    env_file: ./compose/api/envs/api.env
+    environment:
+      - ENV_FILE= # block overriding docker-compose envs load priority by start.sh
+    command: ['api.sh']
+    depends_on:
+      - postgres
+    ports:
+      - 8880:8000/tcp
+    volumes:
+      - ./compose/api/envs:/envs
+      - .:/code
+
+
+volumes:
+  postgre_data:
+
