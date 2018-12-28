@@ -9,6 +9,13 @@ QUICK START
 2. Install docker-compose
 3. Clone current repository
 4. Run command in a path of location docker-compose.yml:
+
         docker-compose up --build api
-or
+        
+    or
+
         sudo docker-compose up --build api
+
+CHECK
+-----------
+If all is fine GET request to http://localhost:8880/health must be return 200_OK status code.
